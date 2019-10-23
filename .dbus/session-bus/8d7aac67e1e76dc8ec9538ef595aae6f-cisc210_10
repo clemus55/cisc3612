@@ -1,0 +1,8 @@
+# This file allows processes on the machine with id 8d7aac67e1e76dc8ec9538ef595aae6f using 
+# display cisc210:10.0 to find the D-Bus session bus with the below address.
+# If the DBUS_SESSION_BUS_ADDRESS environment variable is set, it will
+# be used rather than this file.
+# See "man dbus-launch" for more details.
+DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-LjOsdE5dys,guid=d1b96d171ea1337d3d4702bf5da8b5b0
+DBUS_SESSION_BUS_PID=22870
+DBUS_SESSION_BUS_WINDOWID=10485761

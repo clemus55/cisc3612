@@ -1,0 +1,125 @@
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include <limits.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <pwd.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include "sh.h"
+
+#define BUFFER_SIZE 1000
+
+int sh( int argc, char **argv, char **envp )
+{
+  char *prompt = calloc(PROMPTMAX, sizeof(char));
+  char *commandline = calloc(MAX_CANON, sizeof(char));
+  char *command, *arg, *commandpath, *p, *pwd, *owd;
+  char **args = calloc(MAXARGS, sizeof(char*));
+  int uid, i, status, argsct, go = 1;
+  struct passwd *password_entry;
+  char *homedir;
+  struct pathelement *pathlist;
+
+  uid = getuid();
+  password_entry = getpwuid(uid);               /* get passwd info */
+  homedir = password_entry->pw_dir;		/* Home directory to start
+						  out with*/
+     
+  if ( (pwd = getcwd(NULL, PATH_MAX+1)) == NULL )
+  {
+    perror("getcwd");
+    exit(2);
+  }
+  owd = calloc(strlen(pwd) + 1, sizeof(char));
+  memcpy(owd, pwd, strlen(pwd));
+  prompt[0] = ' '; prompt[1] = '\0';
+
+  /* Put PATH into a linked list */
+  pathlist = get_path();
+
+  while ( go )
+  {
+    /* print your prompt */
+
+    /* get command line and process */
+
+    /* check for each built in command and implement */
+
+     /*  else  program to exec */
+    {
+       /* find it */
+       /* do fork(), execve() and waitpid() */
+
+      /* else */
+        /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
+    }
+  }
+  return 0;
+} /* sh() */
+
+char *which(char *command, struct pathelement *pathlist )
+{
+   /* loop through pathlist until finding command and return it.  Return
+   NULL when not found. */
+char CAT_BUFFER[BUFFER_SIZE];
+    struct pathelement *current = pathlist;
+
+    DIR *dr;
+    struct dirent *de;
+
+    //Go though all our PATH_ENVs
+    while (current != NULL) {
+
+        char *path = current->element;
+
+        //vars for looking though the directories
+        dr = opendir(path);
+
+        if(dr){
+
+        //in each path, look at all of it's files
+            while ((de = readdir(dr)) != NULL) {
+
+
+                //for each file in the directory, check if it's the one we want
+                if (strcmp(de->d_name, command) == 0) {
+                    //cat together the full filename
+                    strcpy(CAT_BUFFER, path);
+                    strcat(CAT_BUFFER, "/");
+                    strcat(CAT_BUFFER, de->d_name);
+
+                    //create a string pointer and return it
+                    int len = (int) strlen(CAT_BUFFER);
+                    char *p = (char *) malloc(len);
+                    strcpy(p, CAT_BUFFER);
+
+                    closedir(dr);
+
+                    return p;
+                }
+            }
+        }
+        closedir(dr);
+        current = current->next;
+    }
+
+
+    //Return null if we haven't found one 
+    return NULL;
+} /* which() */
+
+char *where(char *command, struct pathelement *pathlist )
+{
+  /* similarly loop through finding all locations of command */
+} /* where() */
+
+void list ( char *dir )
+{
+  /* see man page for opendir() and readdir() and print out filenames for
+  the directory passed */
+} /* list() */
+
